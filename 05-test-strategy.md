@@ -108,11 +108,11 @@ Per Avito's ZBP principle, every bug gets an immediate decision:
 ```
                      ┌─────────────────────────────────────┐
                      │         Cluster Metrics             │
-                     │  DORA │ QS │ Defect Leakage │ SLO    │
+                     │  DORA │ QS │ Defect Leakage │ SLO   │
                      └───────────────┬─────────────────────┘
                                      │
-         ┌───────────────────────────┼───────────────────────────┐
-         │                           │                           │
+         ┌───────────────────────────┼──────────────────────────┐
+         │                           │                          │
     ┌────┴────┐              ┌───────┴───────┐           ┌──────┴──────┐
     │ Unit A  │              │   Unit B      │           │   Unit C    │
     │ (MNZ)   │              │   (ADV)       │           │   (SX)      │
@@ -123,8 +123,8 @@ Per Avito's ZBP principle, every bug gets an immediate decision:
     │   Payment → Promotion → Auction → Listing (Playwright E2E)     │
     └────────────────────────────────────────────────────────────────┘
                                      │
-         ┌───────────────────────────┼───────────────────────────┐
-         │                           │                           │
+         ┌───────────────────────────┼──────────────────────────┐
+         │                           │                          │
     ┌────┴────┐              ┌───────┴───────┐           ┌──────┴──────┐
     │ DS      │              │   Platform    │           │   CI/CD     │
     │ Audit   │              │   Quality     │           │   Gates     │
