@@ -1,105 +1,105 @@
 # TDR: Testing Strategy for MNZ Cluster
 
-**Author:** Victor — Test Lead candidate
-**Role:** Test Lead (MNZ) — E5+
-**Cluster:** MNZ (Monetization + Ads + FinTech)
+**Автор:** Victor — кандидат на Test Lead
+**Роль:** Test Lead (MNZ) — E5+
+**Кластер:** MNZ (Монетизация + Реклама + Финтех)
 
 ---
 
 ## Problem
 
-### Business Problem
+### Бизнес-проблема
 
-MNZ cluster generates Avito's core revenue through ad promotion, professional plans, auction mechanics, and CPL/CPA instruments. Financial risk is high — a single undetected bug in pricing, auction, or payment flow causes direct revenue loss and seller churn.
+Кластер MNZ генерирует ключевую выручку Avito через продвижение объявлений, тарифы для профессионалов, механику аукционов и CPL/CPA-инструменты. Финансовый риск высок — один необнаруженный баг в ценообразовании, аукционе или платёжном потоке приводит к прямой потере выручки и оттоку продавцов.
 
-### Quality Problem
+### Проблема качества
 
-Current state:
-- QA embedded in product units (E3–E4), reporting to Unit-Leaders
-- No cluster-level quality governance — each unit tests in isolation
-- DS/ML algorithms (auction efficiency, inventory efficiency, liquidity distribution) not covered by quality process
-- Cross-unit integrations (e.g., payment → listing promotion → auction) have no end-to-end testing
-- Metrics are unit-local — no cluster-wide quality visibility
-- Zero Bug Policy and SLO enforced per unit, not per cluster
+Текущее состояние:
+- QA встроены в продуктовые юниты (E3–E4), отчитываются Unit-Leader'ам
+- Нет quality governance на уровне кластера — каждый юнит тестирует изолированно
+- DS/ML-алгоритмы (auction efficiency, inventory efficiency, liquidity distribution) не покрыты процессом качества
+- Кросс-юнитные интеграции (например, платёж → продвижение → аукцион) не имеют end-to-end тестов
+- Метрики локальны для юнита — нет видимости качества на уровне кластера
+- Zero Bug Policy и SLO соблюдаются в рамках юнита, не кластера
 
-### Risks
+### Риски
 
-| Risk | Impact | Current Coverage |
-|------|--------|-----------------|
-| Pricing bug in MNZ | Revenue loss, seller complaints | Unit tests only |
-| ML regression in auction | Suboptimal ranking → lower liquidity | No QA coverage |
-| Integration failure (Payment → Promotion) | Users pay but get no benefit | No E2E tests |
-| Flaky release | CFR increases, MTTR blows up | No cluster-level quality gates |
-| Crash in seller onboarding | Churn increase | Mobile QA in unit only |
+| Риск | Влияние | Текущее покрытие |
+|------|---------|------------------|
+| Баг в ценообразовании MNZ | Потеря выручки, жалобы продавцов | Только unit-тесты |
+| ML-регрессия в аукционе | Неоптимальное ранжирование → падение ликвидности | Нет QA-покрытия |
+| Отказ интеграции (Payment → Promotion) | Пользователи платят, но не получают услугу | Нет E2E-тестов |
+| Нестабильный релиз | Рост CFR, увеличение MTTR | Нет quality gates на уровне кластера |
+| Crash в онбординге продавца | Рост оттока | Mobile QA только в юните |
 
 ---
 
 ## Description
 
-### Solution Overview
+### Обзор решения
 
-A **three-layer testing architecture** with a **quality governance model** for the MNZ cluster.
+**Трёхслойная архитектура тестирования** + **модель quality governance** для кластера MNZ.
 
-### Layer 1 — Unit (existing, needs improvement)
+### Layer 1 — Unit (существующий, требует улучшений)
 
-Each product unit owns its testing:
+Каждый продуктовый юнит владеет своим тестированием:
 
-| Activity | Owner | Tools |
-|----------|-------|-------|
-| Unit tests (Go) | Developers | Go testing, table-driven tests |
-| API contract tests | QA (E3–E4) | Contract testing per service |
-| UI regression | QA (E4) | Playwright, per-unit POMs |
-| DS model validation | DS engineers | Precision/Recall, AUC, A/B tests |
+| Активность | Владелец | Инструменты |
+|------------|----------|-------------|
+| Unit-тесты (Go) | Разработчики | Go testing, table-driven tests |
+| API contract тесты | QA (E3–E4) | Contract testing per service |
+| UI-регрессия | QA (E4) | Playwright, POM на юнит |
+| Валидация DS-моделей | DS-инженеры | Precision/Recall, AUC, A/B-тесты |
 
-**Improvement needed:** Add mutation testing requirement for critical services (payment, pricing, auction).
+**Улучшение:** Добавить mutation testing для критических сервисов (платежи, ценообразование, аукцион).
 
-### Layer 2 — Cluster (NEW — Test Lead owns this)
+### Layer 2 — Cluster (НОВЫЙ — владеет Test Lead)
 
-Cross-unit quality coordination:
+Кросс-юнитная координация качества:
 
-| Activity | Description | Frequency |
-|----------|-------------|-----------|
-| **Cross-unit integration tests** | End-to-end flows: payment → promotion → auction → listing | Every release |
-| **DS quality audit** | Non-deterministic testing of ML models: property-based, drift detection, A/B validation | Weekly |
-| **Release quality gates** | Pre-release checks: CFR trend, QS score, mutation pass rate | Per release train |
-| **Cluster metrics dashboard** | DORA + QS + business metrics across all MNZ units | Real-time |
-| **Incident RCA** | Cluster-level incident analysis — prevent recurrence across units | Per incident |
-| **Risk map** | Risk register for the entire cluster — updated quarterly | Quarterly |
+| Активность | Описание | Частота |
+|------------|----------|---------|
+| **Кросс-юнитные интеграционные тесты** | End-to-end сценарии: payment → promotion → auction → listing | Каждый релиз |
+| **DS quality audit** | Недетерминированное тестирование ML-моделей: property-based, drift detection, A/B-валидация | Еженедельно |
+| **Release quality gates** | Pre-release проверки: тренд CFR, QS score, mutation pass rate | Per release train |
+| **Дашборд метрик кластера** | DORA + QS + бизнес-метрики всех юнитов MNZ | Real-time |
+| **Incident RCA** | Разбор инцидентов на уровне кластера — предотвращение повторения | Per incident |
+| **Risk map** | Реестр рисков всего кластера — обновление раз в квартал | Ежеквартально |
 
-### Layer 3 — Platform (company-wide, collaborate)
+### Layer 3 — Platform (общеплатформенный, коллаборация)
 
-Work with Tech Platform → Quality team:
+Работа с командой Tech Platform → Quality:
 
-| Activity | Collaboration |
-|----------|--------------|
-| Shared test infrastructure | Contribute to Resource Manager, test data factories |
-| Performance testing | Engage platform team for load testing critical MNZ services |
-| Security testing | Coordinate with security team for payment/personal data flows |
-| Tooling improvements | Propose cluster-level needs to platform team |
+| Активность | Формат коллаборации |
+|------------|-------------------|
+| Общая тестовая инфраструктура | Вклад в Resource Manager, test data factories |
+| Performance testing | Привлечение платформенной команды для load testing критических сервисов MNZ |
+| Security testing | Координация с security-командой по платёжным/personal data потокам |
+| Улучшение инструментов | Формирование потребностей кластера для платформенной команды |
 
-### Governance Model
+### Модель Governance
 
 ```
 Test Lead (MNZ)
-  ├── QA Unit A (E4) — reports functionally to Test Lead, administratively to Unit-Leader
+  ├── QA Unit A (E4) — функционально Test Lead'у, административно Unit-Leader'у
   ├── QA Unit B (E4)
   ├── QA Unit C (E4)
   └── QA Unit D (E3+)
 ```
 
-**Key principle:** QA engineers have a **solid line to Test Lead** for quality standards and a **dotted line to Unit-Leader** for daily work. This prevents the current problem of quality being a secondary concern.
+**Ключевой принцип:** QA-инженеры имеют **сплошную линию к Test Lead** по стандартам качества и **пунктирную к Unit-Leader** по ежедневной работе. Это предотвращает текущую проблему, когда качество — вторичный приоритет.
 
-### Zero Bug Policy Implementation
+### Внедрение Zero Bug Policy
 
-Per Avito's ZBP principle, every bug gets an immediate decision:
+Согласно принципу Avito ZBP, каждый баг получает немедленное решение:
 
-| Decision | Criteria |
-|----------|----------|
-| **Fix now** | Blocks revenue, user-facing crash, security issue |
-| **Fix in queue** | Cosmetic, low-impact, workaround exists |
-| **Never (close)** | Not a bug, will-not-fix, superseded |
+| Решение | Критерий |
+|---------|----------|
+| **Fix now** | Блокирует выручку, пользовательский crash, security-проблема |
+| **Fix in queue** | Косметика, низкое влияние, есть workaround |
+| **Never (close)** | Не баг, will-not-fix, superseded |
 
-**Cluster ZBP board** — visible across all MNZ units. Every unit's bug queue is transparent.
+**Cluster ZBP board** — виден всем юнитам MNZ. Очередь багов каждого юнита прозрачна.
 
 ---
 
@@ -107,24 +107,24 @@ Per Avito's ZBP principle, every bug gets an immediate decision:
 
 ```
                      ┌─────────────────────────────────────┐
-                     │         Cluster Metrics             │
-                     │  DORA │ QS │ Defect Leakage │ SLO   │
+                     │      Cluster Metrics (Grafana)      │
+                     │  DORA │ QS │ Defect Leakage │ SLO    │
                      └───────────────┬─────────────────────┘
                                      │
-         ┌───────────────────────────┼──────────────────────────┐
-         │                           │                          │
+         ┌───────────────────────────┼───────────────────────────┐
+         │                           │                           │
     ┌────┴────┐              ┌───────┴───────┐           ┌──────┴──────┐
     │ Unit A  │              │   Unit B      │           │   Unit C    │
     │ (MNZ)   │              │   (ADV)       │           │   (SX)      │
     └────┬────┘              └───────┬───────┘           └──────┬──────┘
          │                           │                          │
     ┌────┴───────────────────────────┴──────────────────────────┴────┐
-    │              Cross-Unit Integration Tests                      │
-    │   Payment → Promotion → Auction → Listing (Playwright E2E)     │
+    │         Cross-Unit Integration Tests (Playwright E2E)         │
+    │           Payment → Promotion → Auction → Listing             │
     └────────────────────────────────────────────────────────────────┘
                                      │
-         ┌───────────────────────────┼──────────────────────────┐
-         │                           │                          │
+         ┌───────────────────────────┼───────────────────────────┐
+         │                           │                           │
     ┌────┴────┐              ┌───────┴───────┐           ┌──────┴──────┐
     │ DS      │              │   Platform    │           │   CI/CD     │
     │ Audit   │              │   Quality     │           │   Gates     │
@@ -135,107 +135,107 @@ Per Avito's ZBP principle, every bug gets an immediate decision:
 
 ## Trade-offs
 
-| Trade-off | Decision | Rationale | Tech Debt | Resolution |
-|-----------|----------|-----------|-----------|------------|
-| Manual exploratory testing | Keep for critical flows only | Automation covers 90% | 10% manual | Q3: add session-based testing |
-| Performance testing | Start with k6 + platform team | No dedicated perf QA | Full perf framework | Q4: hire or train |
-| Security testing | Coordinate with security team | Not core competence | In-depth pen testing | Continuous: bug bounty |
-| Mobile testing | Existing unit QA + Crash Budget | No dedicated mobile QA | Cross-platform coverage | Q2: mobile QA hire |
-| DS model testing | Property-based + A/B first | Gold dataset later | Gold dataset creation | Q3: build golden dataset |
-| Test data management | Shared factories | No isolated per-unit data | Data conflicts | Q2: test data service |
+| Компромисс | Решение | Обоснование | Tech Debt | Когда устраним |
+|------------|---------|-------------|-----------|----------------|
+| Ручное исследовательское тестирование | Оставить для критических сценариев | Автоматизация покрывает 90% | 10% ручных проверок | Q3: session-based testing |
+| Performance testing | Начать с k6 + платформенная команда | Нет выделенного perf QA | Полный perf-фреймворк | Q4: нанять или обучить |
+| Security testing | Координировать с security-командой | Не core competence | Глубокое pen-testing | Continuous: bug bounty |
+| Mobile-тестирование | Существующий unit QA + Crash Budget | Нет выделенного mobile QA | Кросс-платформенное покрытие | Q2: наём mobile QA |
+| DS-тестирование моделей | Сначала property-based + A/B | Gold dataset позднее | Создание golden dataset | Q3: построить golden dataset |
+| Управление тестовыми данными | Общие фабрики | Нет изолированных данных на юнит | Конфликты данных | Q2: сервис тестовых данных |
 
 ---
 
 ## Alternatives Considered
 
-| Alternative | Rejected Because |
+| Альтернатива | Почему rejected |
 |-------------|-----------------|
-| **Centralized QA team** | Loses domain context — unit QA knows their product best |
-| **Single E2E test suite** | Too slow (30min+), blocks DF, hard to maintain across 200+ teams |
-| **Outsource DS testing** | DS models need domain expertise — must be internal |
-| **No Test Lead, keep per-unit QA** | Current state — cluster risks remain unaddressed |
-| **Buy test management tool** | Allure TestOps already proven in pilot — no need to buy |
-| **Build custom test framework** | Playwright + k6 + Go testing are sufficient — no new framework needed |
+| **Централизованная QA-команда** | Теряется доменный контекст — unit QA знает свой продукт лучше |
+| **Один E2E-сьют** | Слишком медленный (30+ мин), блокирует DF, сложно поддерживать в 200+ команд |
+| **Аутсорс DS-тестирования** | DS-модели требуют доменной экспертизы — только in-house |
+| **Без Test Lead, оставить per-unit QA** | Текущее состояние — риски кластера остаются непокрытыми |
+| **Купить инструмент управления тестами** | Allure TestOps уже запрототипирован — нет необходимости |
+| **Построить кастомный test framework** | Playwright + k6 + Go testing достаточно — новый фреймворк не нужен |
 
 ---
 
 ## FAQ
 
-### Q: How does the Test Lead enforce quality standards if QA reports to Unit-Leaders?
+### Q: Как Test Lead будет enforcing стандарты качества, если QA отчитывается Unit-Leader'ам?
 
-**A:** Solid line to Test Lead for quality standards, dotted line to Unit-Leader for daily work. The Test Lead sets the testing standard, defines metrics, and evaluates QA performance on quality criteria. The Unit-Leader handles sprint planning and product priorities.
+**A:** Сплошная линия к Test Lead по стандартам, пунктирная к Unit-Leader по ежедневной работе. Test Lead задаёт стандарт, определяет метрики и оценивает QA по критериям качества. Unit-Leader отвечает за sprint planning и продуктовые приоритеты.
 
-### Q: How do you test DS models that are non-deterministic?
+### Q: Как тестировать DS-модели, которые недетерминированы?
 
-**A:** Four-layer approach: (1) Property-based tests on model invariants, (2) A/B experiments with statistical significance gates, (3) Drift detection — model metrics monitored in production, (4) Golden dataset for regression testing (developed in Q3).
+**A:** Четырёхуровневый подход: (1) Property-based тесты на инварианты модели, (2) A/B-эксперименты со statistical significance gates, (3) Drift detection — метрики модели в production, (4) Golden dataset для регрессионного тестирования (разработка в Q3).
 
-### Q: Won't adding quality gates slow down 200–250 daily releases?
+### Q: Не замедлят ли quality gates 200–250 ежедневных релизов?
 
-**A:** Quality gates are not CI bottlenecks. Each gate takes < 2 minutes: contract tests (~30s) + mutation sample (~30s) + QS check (~10s). The heavy suite runs in parallel as a nightly. The gate only blocks if CFR trend is rising or QS drops below threshold.
+**A:** Quality gates не являются CI bottleneck. Каждый gate занимает < 2 минут: contract тесты (~30s) + mutation sample (~30s) + QS check (~10s). Полный сьют запускается параллельно nightly. Gate блокирует только если тренд CFR растёт или QS падает ниже порога.
 
-### Q: How do you measure Test Lead success in first 90 days?
+### Q: Как измерить успех Test Lead в первые 90 дней?
 
-| Phase | Goal | Metric |
-|-------|------|--------|
-| Month 1 | Audit current state | Complete risk map for all MNZ units |
-| Month 2 | Establish cluster metrics | DORA dashboard live for all units |
-| Month 3 | First cross-unit integration tests | 3 critical E2E flows covered |
+| Фаза | Цель | Метрика |
+|------|------|---------|
+| Месяц 1 | Audit текущего состояния | Полная карта рисков всех юнитов MNZ |
+| Месяц 2 | Запуск метрик кластера | DORA dashboard live для всех юнитов |
+| Месяц 3 | Первые кросс-юнитные тесты | 3 критических E2E-сценария покрыты |
 
 ---
 
 ## Load
 
-| Activity | Frequency | Execution Time | Parallelism |
-|----------|-----------|---------------|-------------|
-| Unit tests (per unit) | Per commit | < 5 min | CI parallel |
-| API contract tests | Per PR | < 2 min | CI parallel |
-| Cross-unit integration | Per release train | < 15 min | 4× parallel |
-| DS model audit | Weekly | < 30 min | Sequential |
-| Full regression | Nightly | < 30 min | 8× parallel |
-| Mutation testing | Per release | < 10 min (sampled) | CI parallel |
+| Активность | Частота | Время выполнения | Параллельность |
+|------------|---------|-----------------|----------------|
+| Unit-тесты (per unit) | На каждый коммит | < 5 мин | CI parallel |
+| API contract тесты | На каждый PR | < 2 мин | CI parallel |
+| Кросс-юнитная интеграция | Per release train | < 15 мин | 4× parallel |
+| DS model audit | Еженедельно | < 30 мин | Sequential |
+| Полная регрессия | Nightly | < 30 мин | 8× parallel |
+| Mutation testing | Per release | < 10 мин (sampled) | CI parallel |
 
 ---
 
 ## Resources
 
-### Team
+### Команда
 
-| Role | Count | Source |
-|------|-------|--------|
-| Test Lead | 1 | This hire |
-| QA Engineer (E4) | 3–4 | Existing units, re-aligned |
-| QA Engineer (E3+) | 1–2 | Existing units, re-aligned |
+| Роль | Кол-во | Источник |
+|------|--------|----------|
+| Test Lead | 1 | Этот найм |
+| QA Engineer (E4) | 3–4 | Существующие юниты, реорганизация |
+| QA Engineer (E3+) | 1–2 | Существующие юниты, реорганизация |
 
-### Environments
+### Окружения
 
-| Environment | Purpose | Configuration |
-|-------------|---------|---------------|
-| Dev | Unit testing, contract tests | Shared Kubernetes namespace |
-| Staging | Cross-unit integration tests | Full MNZ cluster + mock payment |
-| Prod-like | Performance testing | 10% of prod capacity |
+| Окружение | Назначение | Конфигурация |
+|-----------|------------|-------------|
+| Dev | Unit-тесты, contract тесты | Общий Kubernetes namespace |
+| Staging | Кросс-юнитные интеграционные тесты | Полный кластер MNZ + mock payment |
+| Prod-like | Performance тестирование | 10% от prod-мощностей |
 
-### Tools
+### Инструменты
 
-| Tool | Purpose | Status |
-|------|---------|--------|
-| Playwright | E2E, cross-unit integration | Existing in some units |
-| Go testing | Unit, table-driven tests | Existing |
-| k6 | Performance, load testing | Available |
-| TeamCity | CI | Existing |
-| Allure TestOps | Test reporting, metrics | Piloted |
-| Grafana | DORA dashboard, SLO tracking | Existing |
-| VictoriaMetrics | Metrics storage | Existing |
+| Инструмент | Назначение | Статус |
+|------------|-----------|--------|
+| Playwright | E2E, кросс-юнитная интеграция | Есть в некоторых юнитах |
+| Go testing | Unit, table-driven тесты | Есть |
+| k6 | Performance, load testing | Доступен |
+| TeamCity | CI | Существующий |
+| Allure TestOps | Отчётность по тестам, метрики | Пилотируется |
+| Grafana | DORA dashboard, SLO tracking | Существующий |
+| VictoriaMetrics | Хранилище метрик | Существующий |
 
 ---
 
 ## Information Security
 
-| Concern | Mitigation |
-|---------|------------|
-| Test data contains personal info | Synthetic data generators — no production data in test environments |
-| Payment flows under test | Mock payment gateway — real gateway only in prod with limited test cards |
-| API tokens in tests | Vault-based secrets — TeamCity injects via environment variables |
-| Threat model | Coordinate with security team for new services |
+| Аспект | Мера |
+|--------|------|
+| Тестовые данные содержат personal data | Синтетические генераторы данных — никаких prod-данных в тестовых окружениях |
+| Платёжные потоки под тестами | Mock payment gateway — реальный шлюз только в prod с ограниченными тестовыми картами |
+| API-токены в тестах | Vault-based secrets — TeamCity injects через environment variables |
+| Threat model | Координация с security-командой для новых сервисов |
 
 ---
 
@@ -243,25 +243,25 @@ Per Avito's ZBP principle, every bug gets an immediate decision:
 
 ### Business
 
-- **Revenue impact:** No regression in monetization flows after release
-- **Liquidity Rate:** DS model changes do not degrade listing sell-through
-- **Seller Churn:** Onboarding and payment flow quality gates prevent churn-inducing bugs
+- **Revenue impact:** Никакой регрессии в монетизационных потоках после релиза
+- **Liquidity Rate:** Изменения DS-моделей не деградируют скорость продажи
+- **Seller Churn:** Quality gates на онбординг и платёжный flow предотвращают churn-индуцирующие баги
 
 ### Product
 
-- **Adoption Rate:** Quality gates enable faster rollout of new features
-- **Conversion Rate:** Payment flow regression tests catch conversion-killing bugs before release
-- **Self-Serve Rate:** UI smoke tests prevent onboarding errors
+- **Adoption Rate:** Quality gates ускоряют rollout новых фич
+- **Conversion Rate:** Регрессионные тесты платёжных потоков ловят баги конверсии до релиза
+- **Self-Serve Rate:** UI smoke тесты предотвращают ошибки онбординга
 
 ### Technical
 
-| Metric | Current | Target |
-|--------|---------|--------|
-| CFR | Unknown | < 10% |
-| MTTR | Unknown | < 1 hour |
-| QS | Per unit (varies) | > 4.0 (cluster) |
-| API Coverage (critical) | Unknown | > 90% |
+| Метрика | Сейчас | Цель |
+|---------|--------|------|
+| CFR | Неизвестно | < 10% |
+| MTTR | Неизвестно | < 1 часа |
+| QS | Per unit (варьируется) | > 4.0 (кластер) |
+| API Coverage (critical) | Неизвестно | > 90% |
 | Mutation Score | 0% | > 80% |
-| Flaky Test Rate | Unknown | < 1% |
-| Defect Leakage | Unknown | < 3% |
-| Test Suite Time | Unknown | < 30 min |
+| Flaky Test Rate | Неизвестно | < 1% |
+| Defect Leakage | Неизвестно | < 3% |
+| Test Suite Time | Неизвестно | < 30 мин |
