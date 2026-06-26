@@ -1,51 +1,51 @@
 # TDR — Tech Design Review
 
-**Source:** [Avito Playbook](https://github.com/avito-tech/playbook/blob/master/tech_design_review.md)
+**Источник:** [Avito Playbook](https://github.com/avito-tech/playbook/blob/master/tech_design_review.md)
 
-TDR is Avito's standard format for any design decision. The Test Strategy solution (page 05) follows this format.
+TDR — стандартный формат Avito для любого дизайн-решения. Решение Test Strategy (page 05) следует этому формату.
 
-## Lifecycle
+## Жизненный цикл
 
 ```
-Problem → TDR Dashboard → Design Document → Review → Feedback → Refine → Implement
+Проблема → Дашборд TDR → Дизайн-документ → Ревью → Фидбэк → Доработка → Реализация
 ```
 
-## Template
+## Шаблон
 
-| Section | What it contains |
-|---------|-----------------|
-| **Problem** | Business/product problem being solved |
-| **Description** | Proposed solution and how it addresses the problem |
-| **Dependency Diagram** | Architecture — components and their relationships |
-| **Trade-offs** | Compromises made, planned tech debt, when it will be resolved |
-| **Alternatives** | Other approaches considered and why they were rejected |
-| **FAQ** | Questions raised during design and answers |
-| **Load** | RPM, replicas per DC, read/write ratio |
-| **Resources** | Similar services, DB config, storage, GPU, specific needs |
-| **Database Structure** | Schema design and storage approach |
-| **Information Security** | Public API, personal data, threat model |
-| **Metrics** | Business, product, technical metrics to measure success |
+| Секция | Что содержит |
+|--------|-------------|
+| **Problem** | Бизнес- или продуктовая проблема, которую решаем |
+| **Description** | Предлагаемое решение и как оно решает проблему |
+| **Dependency Diagram** | Архитектура — компоненты и их связи |
+| **Trade-offs** | Компромиссы, планируемый tech debt, когда устраним |
+| **Alternatives** | Какие альтернативы рассматривали, почему rejected |
+| **FAQ** | Вопросы, возникшие в процессе проектирования |
+| **Load** | RPM, реплики на DC, read/write ratio |
+| **Resources** | Похожие сервисы, конфиг БД, storage, GPU, специфика |
+| **Database Structure** | Схема БД, способ хранения |
+| **Information Security** | Публичное API, персональные данные, модель угроз |
+| **Metrics** | Бизнесовые, продуктовые, технические метрики |
 
-## Why TDR for Test Strategy
+## Почему TDR для тестовой стратегии
 
-TDR is how Avito engineers communicate design decisions. Presenting the testing strategy in TDR format demonstrates:
+TDR — это то, как инженеры Avito коммуницируют дизайн-решения. Оформление тестовой стратегии в формате TDR показывает:
 
-1. **You know Avito's internal processes**
-2. **You think like an Avito engineer** — structured, data-driven, risk-aware
-3. **Your solution fits their culture** — not a generic test plan, but a design document
-4. **You speak their language** — TDR, Unit, Cluster, E5, Zero Bug Policy, QS
+1. **Вы знаете внутренние процессы Avito**
+2. **Вы мыслите как инженер Avito** — структурно, data-driven, с учётом рисков
+3. **Ваше решение вписывается в культуру** — не generic test plan, а design document
+4. **Вы говорите на их языке** — TDR, Unit, Cluster, E5, Zero Bug Policy, QS
 
-## Adaptation for QA
+## Адаптация для QA
 
-In the [Test Strategy](05-test-strategy.md) page, each TDR section is adapted for quality:
+В странице [Test Strategy](05-test-strategy.md) каждая секция TDR адаптирована под качество:
 
-| TDR Section | QA Adaptation |
-|-------------|---------------|
-| Problem | Quality problem being solved (financial risk, DS coverage, etc.) |
-| Description | Testing architecture + governance model |
-| Dependency Diagram | Components under test, test layers, CI/CD flow |
-| Trade-offs | What won't be tested initially, tech debt in test automation |
-| Alternatives | Why not just more manual QA / single E2E suite |
-| Load | Test execution frequency, parallelism, CI capacity |
-| Resources | Environments, test data, tools |
+| Секция TDR | Адаптация для QA |
+|------------|-----------------|
+| Problem | Проблема качества (финансовые риски, покрытие DS и т.д.) |
+| Description | Архитектура тестирования + модель quality governance |
+| Dependency Diagram | Компоненты под тестами, слои тестирования, CI/CD flow |
+| Trade-offs | Что не будет тестироваться изначально, tech debt в автоматизации |
+| Alternatives | Почему не просто больше ручного QA / один E2E-сьют |
+| Load | Частота прогона тестов, параллельность, CI capacity |
+| Resources | Окружения, тестовые данные, инструменты |
 | Metrics | DORA, QS, coverage, defect leakage |

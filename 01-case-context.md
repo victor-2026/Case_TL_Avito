@@ -1,53 +1,53 @@
 # Case Context: Test Lead MNZ
 
-## The Role
+## Роль
 
 **Test Lead (MNZ)** — Avito, кластер Монетизации.
 
-Ensure quality across the entire MNZ cluster: Monetization, Ads, and FinTech product units.
+Обеспечение качества всего кластера MNZ: продуктовые юниты Монетизации, Рекламы и Финтеха.
 
-### What the cluster does
+### Чем занимается кластер
 
-| Direction | What | Examples |
-|-----------|------|----------|
-| **MNZ** | Monetization | Ad promotion, professional plans, auction, CPL/CPA |
-| **ADV** | Advertising | Display ads, performance advertising, inventory management |
-| **SX** | FinTech | Payments, subscriptions, financial instruments |
+| Направление | Что делает | Примеры |
+|-------------|-----------|---------|
+| **MNZ** | Монетизация | Продвижение объявлений, тарифы для профессионалов, аукцион, CPL/CPA |
+| **ADV** | Реклама | Медийная реклама, performance-реклама, управление инвентарём |
+| **SX** | Финтех | Платежи, подписки, финансовые инструменты |
 
-### Why this role exists
+### Зачем нужна эта роль
 
-- QA currently embedded in product units (E3–E4), reporting to Unit-Leaders
-- No cluster-level testing strategy — DS algorithms, cross-unit integrations, and financial risk are not covered
-- Need to build quality governance at the cluster level
+- QA сейчас встроены в продуктовые юниты (E3–E4), отчитываются Unit-Leader'ам
+- Нет кластерной стратегии тестирования — DS-алгоритмы, кросс-юнитные интеграции и финансовые риски не покрыты
+- Нужно построить quality governance на уровне кластера
 
-## Expected Level
+## Ожидаемый уровень
 
-| Dimension | Target | Rationale |
-|-----------|--------|-----------|
-| QA ladder | **E5+** | Risk assessment, metrics, cluster automation, incident analysis |
-| Management ladder | **M2–M3** | Team of 3–7, processes, cross-unit coordination |
-| Team | 3–7 QA engineers | Embedded in product units (3–5 units × 1 QA) |
+| Измерение | Цель | Почему |
+|-----------|------|--------|
+| QA лестница | **E5+** | Оценка рисков, метрики, автоматизация кластера, анализ инцидентов |
+| Management лестница | **M2–M3** | Команда 3–7 человек, процессы, кросс-юнитная координация |
+| Команда | 3–7 QA-инженеров | Встроены в продуктовые юниты (3–5 юнитов × 1 QA) |
 
-### E5 responsibilities (relevant)
+### Что входит в E5 (relevant)
 
-- Risk assessment for large projects
-- Quality metrics for the unit/cluster — objective data
-- Incident analysis and prevention
-- QA expert for multiple teams — mentorship
-- Risk map across the entire unit
-- New automation solutions for the cluster
+- Оценка рисков для больших проектов
+- Метрики качества юнита/кластера — объективные данные
+- Анализ инцидентов и их предотвращение
+- Эксперт по QA для нескольких команд — менторство
+- Карта рисков по всему юниту
+- Новые решения для автоматизации кластера
 
-## Key Challenges
+## Ключевые вызовы
 
-| Challenge | Why |
-|-----------|-----|
-| **Scale** | 200–250 releases/day, 2700+ engineers |
-| **Domain mix** | Backend (Go) + Web + Mobile (iOS/Android) + DS/ML |
-| **Financial risk** | Monetization and FinTech — bugs = revenue loss |
-| **Distributed QA** | QA in product units, reporting to Unit-Leaders, not to Test Lead |
-| **DS quality** | ML algorithms for auction, liquidity, inventory — non-deterministic |
+| Вызов | Почему |
+|-------|--------|
+| **Масштаб** | 200–250 релизов/день, 2700+ инженеров |
+| **Микс доменов** | Backend (Go) + Web + Mobile (iOS/Android) + DS/ML |
+| **Финансовый риск** | Монетизация и Финтех — баги = потеря выручки |
+| **Распределённый QA** | QA в продуктовых юнитах, отчитываются Unit-Leader'ам, не Test Lead'у |
+| **Качество DS** | ML-алгоритмы аукциона, ликвидности, инвентаря — недетерминированные |
 
-## References
+## Ссылки
 
 - [Vacancy](https://career.avito.com/vacancy/...) (internal)
 - [QA Profile](https://github.com/avito-tech/playbook/blob/master/QA-profile.md) (E1–E6)

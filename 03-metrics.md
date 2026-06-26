@@ -1,92 +1,92 @@
 # Metrics Framework
 
-**Source:** [Avito TDR](https://github.com/avito-tech/playbook/blob/master/tech_design_review.md) — Metrics section
+**Источник:** [Avito TDR](https://github.com/avito-tech/playbook/blob/master/tech_design_review.md) — секция Metrics
 
-Three layers of metrics. Every TDR must list all three.
-
----
-
-## Business
-
-Measure money and platform efficiency.
-
-| Metric | Description | Test Lead Impact |
-|--------|-------------|------------------|
-| **Revenue** | Monetization revenue | Indirect — bugs in payment flows = lost revenue |
-| **ARPU** | Average Revenue Per User | Indirect — data correctness |
-| **Liquidity Rate** | Listing sell-through speed | DS quality — undetected regression drops liquidity |
-| **Inventory Fill Rate** | % of ad placements filled | Ad ranking bugs → fill rate drop |
-| **Auction Revenue** | Revenue from ad auctions | Testing auction algorithms before release |
-| **Seller Churn** | % sellers leaving paid services | Onboarding bugs → churn increase |
+Три слоя метрик. Каждый TDR должен перечислять все три.
 
 ---
 
-## Product
+## Business (Бизнес)
 
-Measure user behavior and feature value.
+Измеряют деньги и эффективность платформы.
 
-| Metric | Description | Test Lead Impact |
-|--------|-------------|------------------|
-| **Adoption Rate** | % users adopting new feature | Bugs block adoption |
-| **Conversion Rate** | Free → paid conversion | Payment flow errors kill conversion |
-| **NPS (Seller)** | Net Promoter Score | Quality issues → negative NPS |
-| **Retention D1/D7/D30** | User return rate | Bugs cause churn |
-| **Self-Serve Rate** | % users who set up without support | UI errors → support ticket flood |
-| **TTV** | Time-to-Value (first paid placement) | Onboarding friction |
+| Метрика | Описание | Влияние Test Lead |
+|---------|----------|-------------------|
+| **Revenue** | Выручка от монетизации | Косвенно — баги в платёжных потоках = потеря выручки |
+| **ARPU** | Средняя выручка на продавца | Косвенно — корректность данных |
+| **Liquidity Rate** | Скорость продажи товара после размещения | Качество DS — необнаруженная регрессия роняет ликвидность |
+| **Inventory Fill Rate** | % заполнения рекламного инвентаря | Баги в ранжировании → падение fill rate |
+| **Auction Revenue** | Доход от аукционов | Тестирование алгоритмов аукциона до выкатки |
+| **Seller Churn** | % продавцов, ушедших из платных услуг | Баги в онбординге → рост churn |
 
 ---
 
-## Technical
+## Product (Продуктовые)
 
-Direct Test Lead ownership.
+Измеряют поведение пользователей и ценность фич.
+
+| Метрика | Описание | Влияние Test Lead |
+|---------|----------|-------------------|
+| **Adoption Rate** | % использующих новую фичу | Баги блокируют adoption |
+| **Conversion Rate** | Конверсия из бесплатного в платный сегмент | Ошибки в платёжном флоу убивают конверсию |
+| **NPS (Seller)** | Net Promoter Score продавцов | Проблемы с качеством → негативный NPS |
+| **Retention D1/D7/D30** | Возвращаемость пользователей | Баги вызывают отток |
+| **Self-Serve Rate** | % разобравшихся с тарифами без поддержки | UI-ошибки → вал обращений в поддержку |
+| **TTV** | Time-to-Value — время до первого платного размещения | Тормоза в онбординге |
+
+---
+
+## Technical (Технические)
+
+Прямая зона ответственности Test Lead.
 
 ### DORA
 
-| Metric | Elite Target | Your Role |
-|--------|-------------|-----------|
-| **DF** — Deployment Frequency | Multiple/day | Quality gates must not slow DF |
-| **LT** — Lead Time for Changes | < 1 hour | Auto-tests must not be CI bottleneck |
-| **MTTR** — Mean Time to Restore | < 1 hour | RCA, regression tests, post-mortem |
-| **CFR** — Change Failure Rate | 0–15% | **Primary metric** — coverage + gates drive CFR down |
+| Метрика | Цель Elite | Ваша роль |
+|---------|-----------|-----------|
+| **DF** — Deployment Frequency | Несколько раз/день | Quality gates не должны тормозить DF |
+| **LT** — Lead Time for Changes | < 1 часа | Автотесты не должны быть bottleneck в CI |
+| **MTTR** — Mean Time to Restore | < 1 часа | RCA, регрессионные тесты, post-mortem |
+| **CFR** — Change Failure Rate | 0–15% | **Главная метрика** — coverage + gates снижают CFR |
 
 ### Quality Score (QS)
 
-| Component | Weight | Description |
-|-----------|--------|-------------|
-| Incidents | ~30% | Count and severity |
-| SLA Response | ~15% | How fast team responds to bugs |
-| SLA Fix | ~15% | How fast team fixes bugs |
-| Crash Budget (Mobile) | ~20% | iOS/Android crash rate |
-| Coverage / Automation | ~20% | Test coverage |
+| Компонент | Вес | Описание |
+|-----------|:---:|----------|
+| Инциденты | ~30% | Количество и severity |
+| SLA ответа на баг | ~15% | Как быстро реагируем |
+| SLA фикса | ~15% | Как быстро чиним |
+| Crash Budget (Mobile) | ~20% | % крашей iOS/Android |
+| Покрытие / автоматизация | ~20% | Тестовое покрытие |
 
-**Scoring:** 0 / 0.5 / 1 per metric. Max 5.
+**Scoring:** 0 / 0.5 / 1 балла за метрику. Макс = 5.
 
-**Your target:** QS > 4.0
+**Цель:** QS > 4.0
 
-### Test Metrics
+### Тестовые метрики
 
-| Metric | Target |
-|--------|--------|
-| API coverage (critical paths) | > 90% |
+| Метрика | Цель |
+|---------|------|
+| API coverage (критические пути) | > 90% |
 | Mutation Score | > 80% |
 | Flaky Test Rate | < 1% |
-| Full suite execution | < 30 min |
+| Полный прогон сьюта | < 30 мин |
 | Defect Leakage | < 3% |
 
 ### SLO
 
-| Metric | Example for MNZ |
-|--------|----------------|
+| Метрика | Пример для MNZ |
+|---------|----------------|
 | Availability | 99.9% |
-| p95 Latency | < 200ms |
-| Error Budget | 0.1% time (= 8.7h/year) |
+| p95 latency | < 200ms |
+| Error Budget | 0.1% времени (= 8.7 ч/год) |
 
 ---
 
-## Quick Reference
+## Шпаргалка
 
 ```
-Business: Revenue, ARPU, Liquidity, Fill Rate, Auction Revenue, Churn
-Product:  Adoption, Conversion, NPS, Retention, Self-Serve, TTV
+Business:  Revenue, ARPU, Liquidity, Fill Rate, Auction Revenue, Churn
+Product:   Adoption, Conversion, NPS, Retention, Self-Serve, TTV
 Technical: DORA (DF/LT/MTTR/CFR), QS, Coverage, Mutation Score, Flaky Rate
 ```
