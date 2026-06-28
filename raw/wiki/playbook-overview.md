@@ -73,7 +73,7 @@
 - [Инженеры](developer-profile.md)
 - [Аналитики](analytics-levels.md)
 - [BI разработчики](bi-developers.md)
-- [QA-инженеры](QA-profile.md)
+- [QA-инженеры](qa-profile.md)
 - [DS-инженеры](ds-skills.md)
 
 ### Менеджерский трек
