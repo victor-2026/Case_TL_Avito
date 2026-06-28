@@ -16,7 +16,8 @@
 | 03 | [03-metrics.md](03-metrics.md) | **Q2:** Какие метрики буду смотреть |
 | 04 | [04-actions.md](04-actions.md) | **Q3:** Какие действия предпринять |
 | 99 | [99-additional metrics.md](99-additional%20metrics.md) | Метрики качества (справочно) |
-| — | `wiki/` | Подстраницы playbook Avito |
+| — | `raw/wiki/` | Подстраницы playbook Avito (клоны из avito-tech/playbook) |
+| 🎞 | [case-presentation.pptx](case-presentation.pptx) | Презентация для защиты кейса (13 слайдов) |
 
 ---
 
@@ -39,4 +40,5 @@
 1. **01** — текст кейса из PDF
 2. **02 → 03 → 04** — ответы на 3 вопроса кейса (последовательно)
 3. **00** + **99** — справочники
-4. **wiki/** — детали из playbook Avito (структура, соседское соглашение, профили)
+4. **raw/wiki/** — детали из playbook Avito (структура, соседское соглашение, профили)
+5. **case-presentation.pptx** — презентация для защиты
