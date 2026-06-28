@@ -40,5 +40,21 @@
 
 ---
 
-## Файл сессии
+---
+
+## Session 2026-06-29 — DS/ML Go code + LinkedIn Analyzer
+
+### Что сделано
+- **README** — обновлён: `raw/` → `/raw/` (опечатка)
+- **raw/ ответы** — запущены 9 файлов (LSR, TDR, DoR/DoD, кластерная QA, coverage audit, Test Lead vs QA Lead, Q&A Gemini/NotebookLM)
+- **interview-prep.md** — создан в `catalog/Avito/` (2-day план: Go + DS/ML + Mobile + rehearsal)
+- **ai-qa-wiki** — 2 новые статьи с code примерами:
+  - `wiki/ds-ml-quality-testing-2026` + `code/ds-ml-testing-go/`
+  - `wiki/linkedin-performance-analyzer-2026` + `code/linkedin-analyzer/`
+
+### Pipeline
+- **01.07** Защита кейса Avito Test Lead — 13 слайдов pptx, 3 вопроса
+- **02.07** NextDay AI
+
+### Файл сессии
 `/Users/victor/Private/Case_TL_Avito/session-checkpoint.md`
